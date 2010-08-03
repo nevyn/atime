@@ -24,10 +24,10 @@
 {
 	NSDate *selfInBMT; {
     NSTimeZone *source = [NSTimeZone systemTimeZone];
-  	NSTimeZone *dest = [NSTimeZone timeZoneWithName:@"Europe/Zurich"];
+  	NSTimeZone *dest = [NSTimeZone timeZoneWithName:@"GMT"];
     
     NSInteger sourceSeconds = [source secondsFromGMTForDate:self];
-		NSInteger destinationSeconds = [dest secondsFromGMTForDate:self];
+		NSInteger destinationSeconds = [dest secondsFromGMTForDate:self] + 3600.; // BMT = GMT+1, no DST
 		NSTimeInterval interval = destinationSeconds - sourceSeconds;
 		selfInBMT = [NSDate dateWithTimeInterval:interval sinceDate:self];
   }

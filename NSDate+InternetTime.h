@@ -10,6 +10,5 @@
 
 
 @interface NSDate (TCInternetTime)
--(NSDate*)atMidnight;
 -(NSTimeInterval)internetTimeOfDay;
 @end

@@ -10,30 +10,8 @@
 
 
 @implementation NSDate (TCInternetTime)
--(NSDate*)atMidnight;
-{
-	NSDateComponents *components = [[NSCalendar currentCalendar] components:NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self];
-	[components setHour:0];
-	[components setMinute:0];
-	[components setSecond:0];
-	return [[NSCalendar currentCalendar] dateFromComponents:components];
-}
-// Thanks to http://cocoawithlove.com/2008/10/worldtimeconverter-dates-and-timezones.html
-// for the timezone magic
 -(NSTimeInterval)internetTimeOfDay;
 {
-	NSDate *selfInBMT; {
-    NSTimeZone *source = [NSTimeZone systemTimeZone];
-  	NSTimeZone *dest = [NSTimeZone timeZoneWithName:@"GMT"];
-    
-    NSInteger sourceSeconds = [source secondsFromGMTForDate:self];
-		NSInteger destinationSeconds = [dest secondsFromGMTForDate:self] + 3600.; // BMT = GMT+1, no DST
-		NSTimeInterval interval = destinationSeconds - sourceSeconds;
-		selfInBMT = [NSDate dateWithTimeInterval:interval sinceDate:self];
-  }
-  
-	NSTimeInterval secondsSinceMidnight = [selfInBMT timeIntervalSinceDate:[selfInBMT atMidnight]];
-	NSTimeInterval secondsInADay = 24*60*60.;
-	return (secondsSinceMidnight/secondsInADay)*1000.;
+	return fmod([self timeIntervalSince1970]+3600, 86400)/86400.*1000.;
 }
 @end
